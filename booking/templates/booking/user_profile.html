@@ -1,0 +1,154 @@
+{% extends 'booking/base.html' %}
+
+{% block content %}
+<div class="profile-container">
+  <div class="profile-card">
+    <h2>👤 My Profile</h2>
+    <p class="welcome-text">Welcome, <strong>{{ user.username }}</strong></p>
+    <p class="user-details">
+      📧 <strong>Email:</strong> {{ user.email }}<br>
+      📅 <strong>Joined on:</strong> {{ user.date_joined|date:"F d, Y" }}<br>
+      📦 <strong>Total Bookings:</strong> {{ bookings|length }}
+    </p>
+
+    <div class="booking-section">
+      <h3>Your Bookings:</h3>
+      {% if bookings %}
+        <ul class="booking-list">
+          {% for booking in bookings %}
+            <li>
+              <div class="booking-info">
+                <span class="hotel-name">{{ booking.room.hotel.name }}</span>
+                <span class="room-type">({{ booking.room.room_type }})</span>
+              </div>
+              <div class="price-actions">
+                <span class="price">₹ {{ booking.room.price }}</span>
+                <form method="post" action="{% url 'cancel_booking' booking.id %}" style="display: inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="cancel-btn">Cancel</button>
+                </form>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="no-booking">You have no bookings yet. 😔</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .profile-container {
+    max-width: 900px;
+    margin: auto;
+  }
+
+  .profile-card {
+    background-color: #1e1e1e;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+    animation: fadeIn 0.5s ease-in;
+  }
+
+  .profile-card h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #FFD700;
+  }
+
+  .welcome-text {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #aaa;
+  }
+
+  .user-details {
+    font-size: 15px;
+    color: #aaa;
+    margin-bottom: 25px;
+    line-height: 1.6;
+  }
+
+  .booking-section h3 {
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 5px;
+  }
+
+  .booking-list {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .booking-list li {
+    background-color: #2a2a2a;
+    margin-bottom: 12px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s ease;
+    color: #fff;
+  }
+
+  .booking-list li:hover {
+    background-color: #333;
+  }
+
+  .hotel-name {
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .room-type {
+    font-size: 14px;
+    color: #ccc;
+    margin-left: 8px;
+  }
+
+  .price-actions {
+    display: flex;
+    align-items: center;
+  }
+
+  .price {
+    font-weight: bold;
+    font-size: 16px;
+    color: #FFD700;
+    min-width: 80px;
+    text-align: right;
+    margin-right: 10px;
+  }
+
+  .cancel-btn {
+    background-color: #d9534f;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease;
+  }
+
+  .cancel-btn:hover {
+    background-color: #c9302c;
+  }
+
+  .no-booking {
+    font-style: italic;
+    color: #888;
+    margin-top: 20px;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+{% endblock %}

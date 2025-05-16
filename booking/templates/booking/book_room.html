@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Room</title>
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212; /* True dark background */
+            color: #e0e0e0; /* Soft light text */
+            margin: 0;
+            padding: 20px;
+        }
+
+        .booking-container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #1e1e1e; /* Slightly lighter dark gray for contrast */
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        .booking-container:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #FFD700; /* Gold */
+            font-size: 30px;
+        }
+
+        .room-info {
+            background-color: #242424; /* Mid-tone dark gray */
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+            border-left: 5px solid #FFD700; /* Gold highlight edge */
+        }
+
+        .room-info p {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #e0e0e0; /* Light text */
+            line-height: 1.6;
+        }
+
+        .room-info p strong {
+            color: #FFD700; /* Gold for key details */
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        input, select {
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #292929; /* Input background slightly brighter for clarity */
+            color: #e0e0e0; /* Input text color */
+            border: 1px solid #444; /* Subtle border */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: #FFD700; /* Gold border on focus */
+            outline: none;
+            box-shadow: 0 0 6px #FFD700;
+        }
+
+        button {
+            padding: 12px;
+            background-color: #FFD700; /* Gold buttons */
+            color: #1e1e1e; /* Dark button text */
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #e6c200; /* Slightly muted gold */
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0); /* Subtle press effect */
+        }
+
+        .room-info button {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="booking-container">
+        <h2>Book Room {{ room.room_number }}</h2>
+
+        <div class="room-info">
+            <p><strong>Type:</strong> {{ room.room_type }}</p>
+            <p><strong>Hotel:</strong> {{ room.hotel.name }}</p>
+            <p><strong>Price:</strong> ₹{{ room.price }}</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Confirm Booking</button>
+        </form>
+    </div>
+</body>
+</html>

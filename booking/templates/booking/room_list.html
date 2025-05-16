@@ -1,0 +1,301 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Available Rooms</title>
+  <style>
+    /* Background Image with Overlay */
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  background: url("{% static 'images/bgbk.png' %}") no-repeat center center/cover;
+  position: relative;
+  color: white;
+  padding-top: 80px;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(3px);
+  z-index: -1;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #fcd34d;
+  font-size: 36px;
+}
+
+/* Filter Form */
+.filter-form {
+  background-color: rgba(20, 20, 20, 0.75);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.filter-form select,
+.filter-form input {
+  padding: 12px;
+  border: 1px solid #666;
+  border-radius: 6px;
+  font-size: 15px;
+  min-width: 180px;
+  background-color: rgba(50, 50, 50, 0.7);
+  color: #f1f1f1;
+}
+
+.filter-form button {
+  background-color: #fcd34d;
+  color: #1e1e1e;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.filter-form button:hover {
+  background-color: #fbbf24;
+}
+
+.clear-btn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.clear-btn:hover {
+  background-color: #c0392b;
+}
+
+/* Room List Grid */
+.room-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+/* Room Cards */
+.room-card {
+  background-color: rgba(30, 30, 30, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.room-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.7);
+}
+
+.room-card h3 {
+  font-size: 22px;
+  color: #fcd34d;
+  margin-bottom: 10px;
+}
+
+.room-card p {
+  margin: 10px 0;
+  font-size: 15px;
+  color: #dcdcdc;
+}
+
+.room-card p strong {
+  color: #ffffff;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.badge-available {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.badge-booked {
+  background-color: #e74c3c;
+  color: white;
+}
+
+/* Book Now Button */
+.book-btn {
+  background-color: #fcd34d;
+  color: #1e1e1e;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.book-btn:hover {
+  background-color: #fbbf24;
+}
+
+.book-btn:disabled {
+  background-color: #c0392b;
+  cursor: not-allowed;
+  color: white;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a {
+  padding: 8px 12px;
+  margin: 0 5px;
+  background: #fcd34d;
+  color: #1e1e1e;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.pagination a:hover {
+  background: #fbbf24;
+}
+/* Navbar container for home and profile buttons */
+.nav-buttons {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between buttons */
+}
+
+/* Button styles for Home and Profile */
+.nav-buttons a {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #FFD700; /* Gold color for buttons */
+    color: #1e1e1e; /* Dark text on button */
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover and Active states */
+.nav-buttons a:hover {
+    background-color: #e6c200; /* Slightly muted gold */
+    transform: translateY(-2px);
+}
+
+.nav-buttons a:active {
+    transform: translateY(0);
+}
+
+
+  </style>
+</head>
+<body>
+  <div class="nav-buttons">
+  <a href="{% url 'home' %}" class="home-btn">🏠 Home</a>
+  <a href="{% url 'profile' %}">Profile</a>
+</div>
+  <h1>Available Rooms</h1>
+  <form method="get" class="filter-form">
+      <select name="city">
+          <option value="">All Cities</option>
+          {% for city in cities %}
+              <option value="{{ city }}" {% if request.GET.city == city %}selected{% endif %}>{{ city }}</option>
+          {% endfor %}
+      </select>
+      <input type="number" name="min_price" placeholder="Min Price" value="{{ request.GET.min_price }}">
+      <input type="number" name="max_price" placeholder="Max Price" value="{{ request.GET.max_price }}">
+      <select name="hotel">
+          <option value="">All Hotels</option>
+          {% for hotel in hotels %}
+              <option value="{{ hotel.id }}" {% if hotel.id|stringformat:"s" == request.GET.hotel %}selected{% endif %}>{{ hotel.name }}</option>
+          {% endfor %}
+      </select>
+      <input type="text" name="type" placeholder="Room Type" value="{{ request.GET.type }}" id="search-box">
+      <select name="available">
+          <option value="">Availability</option>
+          <option value="true" {% if request.GET.available == 'true' %}selected{% endif %}>Available</option>
+          <option value="false" {% if request.GET.available == 'false' %}selected{% endif %}>Booked</option>
+      </select>
+      <button type="submit">Filter</button>
+      <a href="{% url 'room_list' %}" style="text-decoration: none;">
+          <button type="button" class="clear-btn">Clear Filters</button>
+      </a>
+  </form>
+  <div class="room-list" id="room-list">
+      {% for room in rooms %}
+          <div class="room-card">
+              <h3>Room {{ room.room_number }} - {{ room.room_type }}</h3>
+              <span class="status-badge {% if room.available %}badge-available{% else %}badge-booked{% endif %}">
+                  {% if room.available %}✓ Available{% else %}✗ Booked{% endif %}
+              </span>
+              <p><strong>Hotel:</strong> {{ room.hotel.name }}</p>
+              <p><strong>Price:</strong> ₹{{ room.price }}</p>
+              {% if room.available %}
+                  <a href="{% url 'book_room' room.id %}" class="book-btn">Book Now</a>
+              {% else %}
+                  <button class="book-btn" disabled>Not Available</button>
+              {% endif %}
+          </div>
+      {% empty %}
+          <p style="text-align:center; color: #aaa;">No rooms found matching the filters.</p>
+      {% endfor %}
+  </div>
+  <div class="pagination">
+      {% if rooms.has_previous %}
+          <a href="?page=1">First</a>
+          <a href="?page={{ rooms.previous_page_number }}">Previous</a>
+      {% endif %}
+      <span>Page {{ rooms.number }} of {{ rooms.paginator.num_pages }}</span>
+      {% if rooms.has_next %}
+          <a href="?page={{ rooms.next_page_number }}">Next</a>
+          <a href="?page={{ rooms.paginator.num_pages }}">Last</a>
+      {% endif %}
+  </div>
+  <script>
+      document.getElementById("search-box").addEventListener("keyup", function() {
+          let searchValue = this.value.toLowerCase();
+          let rooms = document.querySelectorAll(".room-card");
+          rooms.forEach(room => {
+              let roomType = room.querySelector("h3").textContent.toLowerCase();
+              room.style.display = roomType.includes(searchValue) ? "block" : "none";
+          });
+      });
+  </script>
+</body>
+</html>
