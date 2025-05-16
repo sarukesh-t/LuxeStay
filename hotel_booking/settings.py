@@ -128,3 +128,6 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 # For development
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
